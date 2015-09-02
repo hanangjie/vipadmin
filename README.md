@@ -11,4 +11,6 @@ member manage
  
  后台是expree+jade+mysql
 
+ 启动 set DEBUG=myapp & npm start win7
+
        
