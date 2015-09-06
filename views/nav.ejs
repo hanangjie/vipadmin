@@ -79,14 +79,14 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header">主目录</li>
-            <li class="active treeview">
-                <a href="#">
+            <li class="<% if(name== 'index'){%> <%= 'active'%><% }%> treeview">
+                <a href="/index">
                     <i class="fa fa-dashboard"></i> <span>menmberList</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
-
             </li>
-
-            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+            <li class="<% if(name== 'costHistory'){%> <%= 'active'%><% }%>">
+                <a href="/costHistory"><i class="fa fa-circle-o text-aqua"></i> <span>costHistory</span></a>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

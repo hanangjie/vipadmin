@@ -7,7 +7,12 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/index', function(req, res, next) {
-    res.render('index', { title: 'Express' });
+    res.render('index', { name: 'index' });
+});
+
+
+router.get('/costHistory', function(req, res, next) {
+    res.render('costHistory', { name: 'costHistory' });
 });
 
 module.exports = router;
