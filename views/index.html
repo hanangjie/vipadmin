@@ -35,40 +35,44 @@
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th>mobile</th>
-                                    <th>money</th>
-                                    <th>recharge</th>
-                                    <th>consume time</th>
-                                    <th>remark</th>
-                                    <th width="200">control</th>
+                                    <th>手机</th>
+                                    <th>余额</th>
+                                    <!--<th>最后充值</th>-->
+                                    <th>最后一次消费时间</th>
+                                    <th>备注</th>
+                                    <th width="200">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>15555648751</td>
-                                    <td>￥875.00</td>
-                                    <td>￥300.00</td>
-                                    <td>2015.15.16</td>
-                                    <td>remark</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#consumeModal">consume</button>
-                                            <button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#rechargeModal">recharge</button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <% if (list.length) { %>
+                                        <% list.forEach(function(lists){ %>
+                                         <tr>
+                                            <td><%=lists.mobile %></td>
+                                            <td>￥<%=lists.money %></td>
+                                            <!--<td>￥300.00</td>-->
+                                            <td>2015.15.16</td>
+                                            <td><%=lists.remark %></td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-info" relId="<%=lists.id %>"  data-toggle="modal" data-target="#consumeModal">consume</button>
+                                                    <button type="button" class="btn btn-danger" relId="<%=lists.id %>"  data-toggle="modal" data-target="#rechargeModal">recharge</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                    <% } %>
 
                                 </tbody>
-                                <tfoot>
+                               <!-- <tfoot>
                                 <tr>
-                                    <th>mobile</th>
-                                    <th>money</th>
-                                    <th>recharge</th>
-                                    <th>consume time</th>
-                                    <th>remark</th>
-                                    <th>control</th>
+                                    <th>手机</th>
+                                    <th>余额</th>
+                                    <th>最后充值</th>
+                                    <th>最后一次消费时间</th>
+                                    <th>备注</th>
+                                    <th width="200">操作</th>
                                 </tr>
-                                </tfoot>
+                                </tfoot>-->
                             </table>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
