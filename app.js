@@ -33,6 +33,10 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+app.use('/', function(req, res) {
+  console.log("Cookies: ", req.cookies)
+})
+
 // error handlers
 
 // development error handler
