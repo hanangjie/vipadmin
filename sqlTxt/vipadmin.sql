@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50621
 File Encoding         : 65001
 
-Date: 2015-09-02 16:29:44
+Date: 2015-09-11 15:57:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -41,10 +41,10 @@ CREATE TABLE `customer` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `mobile` int(20) DEFAULT NULL,
   `storeid` int(10) NOT NULL,
-  `money` int(20) DEFAULT NULL,
+  `creattime` int(20) NOT NULL,
   `remark` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of customer
@@ -64,6 +64,23 @@ CREATE TABLE `msgcode` (
 
 -- ----------------------------
 -- Records of msgcode
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `recharge`
+-- ----------------------------
+DROP TABLE IF EXISTS `recharge`;
+CREATE TABLE `recharge` (
+  `id` int(10) NOT NULL,
+  `userid` int(10) NOT NULL,
+  `storeid` int(10) NOT NULL,
+  `money` float(20,2) NOT NULL,
+  `time` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of recharge
 -- ----------------------------
 
 -- ----------------------------
