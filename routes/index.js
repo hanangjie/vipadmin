@@ -111,15 +111,16 @@ router.post('/addCustomer',function(req, res, next){
             chcek(res1);
         });
         function chcek(res1){
-            if(!res1){
-                debug("check:true"+(typeof res1));
-                var sql=`insert into customer(mobile) values("${req.body.mobile}")`;
+            if(res1.length<1){
+                var con=conn.conn();
+                con.connect();
+                var sql=`insert into customer(storeid,mobile,name) values(1,"${req.body.mobile}","${req.body.name}")`;
                 con.query(sql,function(err1,res1){
                     debug("error:"+err1+";result:"+res1);
                     addCus(res1);
                 });
+                con.end();
             }else{
-                debug("check:false"+(typeof res1));
                 res.send({
                     code:-1,
                     msg:"用户已存在"
@@ -128,11 +129,14 @@ router.post('/addCustomer',function(req, res, next){
         }
         function addCus(res1){
             if(res1.length>=1){
+                var con=conn.conn();
+                con.connect();
                 var sql=`insert into customer(mobile) values("${req.body.mobile}")`;
                 con.query(sql,function(err1,res1){
                     debug("error:"+err1+";result:"+res1);
-                    addCus(res1);
+                    //addCus(res1);
                 });
+                con.end();
             }else{
                 res.send({
                     code:-2,
