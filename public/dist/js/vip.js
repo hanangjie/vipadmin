@@ -1,4 +1,7 @@
 $(function(){
+    $(".btn-primary").click(function(){
+        $(this).closest("form").submit();
+    });
     "use strict";
     $("form[rel=ajax]").submit(function(e){
         e.preventDefault();

@@ -105,19 +105,21 @@ router.post('/addCustomer',function(req, res, next){
     try{
         var con=conn.conn();
         con.connect();
-        var sql=`select * from store where mobile='${req.body.mobile}'`;
+        var sql=`select * from customer where mobile='${req.body.mobile}'`;
         con.query(sql,function(err1,res1){
             debug("error:"+err1+";result:"+res1);
             chcek(res1);
         });
         function chcek(res1){
-            if(res1.length<1){
+            if(!res1){
+                debug("check:true"+(typeof res1));
                 var sql=`insert into customer(mobile) values("${req.body.mobile}")`;
                 con.query(sql,function(err1,res1){
                     debug("error:"+err1+";result:"+res1);
                     addCus(res1);
                 });
             }else{
+                debug("check:false"+(typeof res1));
                 res.send({
                     code:-1,
                     msg:"用户已存在"
@@ -133,8 +135,8 @@ router.post('/addCustomer',function(req, res, next){
                 });
             }else{
                 res.send({
-                    code:-1,
-                    msg:"位置错误"
+                    code:-2,
+                    msg:"未知错误"
                 });
             }
         }
