@@ -95,11 +95,53 @@ router.post('/login', function(req, res, next) {
             }
         }
         con.end();
-
     }catch(e){
         console.log(e.stack);
     }
 });
 
+router.post('/addCustomer',function(req, res, next){
+    "use strict";
+    try{
+        var con=conn.conn();
+        con.connect();
+        var sql=`select * from store where mobile='${req.body.mobile}'`;
+        con.query(sql,function(err1,res1){
+            debug("error:"+err1+";result:"+res1);
+            chcek(res1);
+        });
+        function chcek(res1){
+            if(res1.length<1){
+                var sql=`insert into customer(mobile) values("${req.body.mobile}")`;
+                con.query(sql,function(err1,res1){
+                    debug("error:"+err1+";result:"+res1);
+                    addCus(res1);
+                });
+            }else{
+                res.send({
+                    code:-1,
+                    msg:"用户已存在"
+                });
+            }
+        }
+        function addCus(res1){
+            if(res1.length>=1){
+                var sql=`insert into customer(mobile) values("${req.body.mobile}")`;
+                con.query(sql,function(err1,res1){
+                    debug("error:"+err1+";result:"+res1);
+                    addCus(res1);
+                });
+            }else{
+                res.send({
+                    code:-1,
+                    msg:"位置错误"
+                });
+            }
+        }
+        con.end();
+    }catch(e){
+        console.log(e.stack);
+    }
+});
 
 module.exports = router;
