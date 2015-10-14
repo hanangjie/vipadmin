@@ -15,7 +15,17 @@ $(function(){
             dataType:"json",
             data:$this.serialize()
         }).done(function(data){
-            eval(call+"(data)");
+            if(call){
+                eval(call+"(data)");
+            }else{
+                $(".modal").modal("hide");
+                $("#alert").find(".modal-body").html(data.msg).end().modal();
+                setTimeout(function(){
+                    $(".modal").modal("hide");
+                },1500);
+            }
         });
     });
+
+
 });

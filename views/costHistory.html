@@ -35,32 +35,32 @@
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th>mobile</th>
-                                    <th>cost</th>
-                                    <th>money</th>
-                                    <th>time</th>
-                                    <th>remark</th>
+                                    <th>手机</th>
+                                    <th>姓名</th>
+                                    <th>消费</th>
+                                    <th>消费类型</th>
+                                    <th>消费时间</th>
+                                    <th>备注</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>15555648751</td>
-                                    <td>￥15.00</td>
-                                    <td>￥300.00</td>
-                                    <td>2015.15.16</td>
-                                    <td>remark</td>
+
+                                    <% if (list.length) { %>
+                                        <% list.forEach(function(lists){ %>
+                                        <tr>
+                                            <td><%=lists.mobile %></td>
+                                            <td><%=lists.name %></td>
+                                            <td><%=lists.money %></td>
+                                            <td><%=lists.status==1?"消费":"充值" %></td>
+                                            <td><%=lists.time %></td>
+                                            <td><%=lists.remark %></td>
+                                        </tr>
+                                        <% }) %>
+                                    <% } %>
                                 </tr>
 
                                 </tbody>
-                                <tfoot>
-                                <tr>
-                                    <th>mobile</th>
-                                    <th>cost</th>
-                                    <th>money</th>
-                                    <th>time</th>
-                                    <th>remark</th>
-                                </tr>
-                                </tfoot>
                             </table>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
