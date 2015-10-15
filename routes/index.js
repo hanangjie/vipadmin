@@ -14,19 +14,41 @@ router.get('/index', function(req, res, next) {
        var con=conn.conn();
        con.connect();
        var sql="select * from customer where storeid='1' limit 10";
-       con.query(sql,function(err1,res1){
-            debug("error:%o;result:%o",res1,err1);
-            push(res1);
-        });
-       function push(res1){
-           res1.forEach(function(e){
-               e.creattime=moment(e.creattime).format("YYYY-MM-DD");
-           });
-           res.render('index', { name: 'index',
-               list:res1
-           });
-       }
-       con.end();
+       sqlServer.sqlPromise({con:con,debug:debug,sql:"select * from customer where storeid='1' limit 10",name:"select"}).then(function(res1){
+           "use strict";
+            var selectStr="";
+           if(res1.length>0){
+               res1.forEach(function(e){
+                   e.creattime=moment(e.creattime).format("YYYY-MM-DD");
+                   e.money=0;
+                   selectStr+=`or userid=\"${e.id}\" `;
+               });
+               selectStr=`select * from money where `+selectStr.slice(3);
+               sqlServer.sqlPromise({con:con,debug:debug,sql:selectStr,name:"selectMoney"}).then(function(result){
+                   result.forEach(function(e){
+                        for(var q=0;q<res1.length;q++){
+                            if(res1[q].id==e.userid){
+                                if(e.status==1){
+                                    res1[q].money+=parseFloat(e.money);
+                                }else{
+                                    res1[q].money-=parseFloat(e.money);
+                                }
+                            }
+                        }
+                   });
+                   debug("res1",res1);
+                   res.render('index', { name: 'index',
+                       list:res1
+                   });
+                   con.end();
+               });
+           }else{
+               con.end();
+               res.render('index', { name: 'index',
+                   list:res1
+               });
+           }
+       });
 
     }catch(e){
         console.log(e.stack);
@@ -37,44 +59,10 @@ router.get('/index', function(req, res, next) {
 
 router.post('/addCustomer',function(req, res, next){
     "use strict";
-    /*function selectUser(){
-        var sql=`select * from customer where mobile='${req.body.mobile}'`;
-        con.query(sql,function(err1,res1){
-            debug("selectUser:error:"+err1+";result:"+res1);
-        })
-    }
-
-    function insertUser(){
-        var sql=`insert all into customer(storeid,mobile,name) values(1,"${req.body.mobile}","${req.body.name}")`;
-        con.query(sql,function(err1,res1){
-            debug("insertUser:error:"+err1+";result:"+res1);
-            return res1;
-        });
-    }
-
-    function insertMoney(){
-        var sql=`insert into money(storeid,userid,money,status)
-                    values(1,6,500,1)`;
-        con.query(sql,function(err1,res1){
-            debug("insertMoney:error:"+err1+";result:"+res1);
-            return res1;
-        });
-    }
-*/
+    req.body.mobile=parseInt(req.body.mobile)||0;
 
     var con=conn.conn();
     con.connect();
-    /*var promise = new Promise(function(resolve, reject) {
-        var sql=`select * from customer where mobile='${req.body.mobile}'`;
-        con.query(sql,function(err1,res1){
-            debug("selectUser:error:%o;result:%o",err1,res1);
-            if (res1){
-                resolve(res1);
-            } else {
-                reject(err1);
-            }
-        });
-    });*/
 
     sqlServer.sqlPromise({con:con,debug:debug,sql:`select * from customer where mobile='${req.body.mobile}'`,name:"select"}).then(function(res1){
         if(res1.length<1){
@@ -86,55 +74,24 @@ router.post('/addCustomer',function(req, res, next){
             });
             con.end();
         }
-    }).then(function(res){
-        debug("res:",res);
+    }).then(function(result){
         return sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into money(storeid,userid,money,status)
-                    values(1,6,500,1)`,name:"insert"});
-    });
-   /* promise.then(function(p){
-        if(p.length<1) {
-            var promise2 = new Promise(function (resolve, reject) {
-                var sql = `insert into customer(storeid,mobile,name) values(1,"${req.body.mobile}","${req.body.name}")`;
-                con.query(sql, function (err1, res1) {
-                    debug("selectUser:error:%o;result:%o",err1,res1);
-                    if (res1) {
-                        resolve(res1);
-                    } else {
-                        reject(err1);
-                    }
-                });
+                    values(1,"${result.insertId}","${req.body.money}",1)`,name:"insertMoney"});
+    }).then(function(result1){
+        if(result1) {
+            res.send({
+                userid:result.insertId,
+                code: "1",
+                msg: "用户添加成功"
+            });
+        }else{
+            res.send({
+                code: "-2",
+                msg:"未知错误"
             });
         }
-
         con.end();
-
     });
-*/
-    /*
-    var promise3 = new Promise(function(resolve, reject) {
-        var sql=`insert into money(storeid,userid,money,status)
-                    values(1,6,500,1)`;
-        con.query(sql,function(err1,res1){
-            debug("selectUser:error:"+err1+";result:"+res1);
-            if (res1){
-                resolve(res1);
-            } else {
-                reject(error);
-            }
-        });
-    });
-    var promise4 = new Promise(function(resolve, reject) {
-        var sql=`insert into money(storeid,userid,money,status)
-                    values(1,6,500,1)`;
-        con.query(sql,function(err1,res1){
-            debug("selectUser:error:"+err1+";result:"+res1);
-            if (res1){
-                resolve(res1);
-            } else {
-                reject(error);
-            }
-        });
-    });*/
 });
 
 

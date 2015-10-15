@@ -8,10 +8,11 @@ var sqlServer={
         return (new Promise(function(resolve, reject) {
             var sql = option.sql;
             option.con.query(sql, function (err1, res1) {
-                option.debug(option.name, ":error:" + err1 + ";result:" + res1);
-                if (res1) {
+                option.debug(option.name, ":error:%o;result:%o",err1,res1);
+                if (!err1) {
                     resolve(res1);
                 } else {
+                    option.con.end();
                     reject(err1);
                 }
             });
