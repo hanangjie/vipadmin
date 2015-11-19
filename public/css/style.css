@@ -1,2 +1,3 @@
 
 .parsley-error{color:red;}
+.alert-dismissable{position: fixed;right: 10px;bottom:10px;min-width: 200px;}

@@ -9,7 +9,7 @@ member manage
  
  前端框架是 bootstrap  adminLTE皮肤
  
- 后台是expree+jade+mysql
+ 后台是expree+ejs+mysql
 
  启动 set DEBUG=myapp & npm start win7
 

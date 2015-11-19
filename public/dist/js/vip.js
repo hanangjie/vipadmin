@@ -46,4 +46,69 @@ $(function(){
         },1500);
 
     }
+
+    //输入钱
+    $(".moneySign").change(function(){
+        if(!($(this).val().indexOf("￥")!=-1)){
+            $(this).val("￥"+$(this).val());
+        }
+    });
+
+    $(document).on("click",".deleteModal",function(){
+        var $this=$(this);
+        var deleteModal = $('#delete');
+        var deleteConfirmBtn = deleteModal.find('.modal-confirm');
+        deleteModal.find(".modal-body").html($this.attr("msg")||"确定删除吗？");
+        deleteModal.modal();
+        deleteConfirmBtn.unbind('click');
+        deleteConfirmBtn.on('click', function (e) {
+            $.ajax({
+                type:$this.attr("method")||"get",
+                url:$this.attr("action")
+            }).done(function(data){
+                if(data.code==0){
+                    if($this.attr("call")){
+                        eval($this.attr("call")+"(data)");
+                        return;
+                    }
+                    $this.closest("tr").remove();
+                    showSuccessMsg(data.msg);
+                }else{
+                    showErrorMsg(data.msg);
+                }
+            });
+        })
+    });
 });
+
+
+
+function showErrorMsg(message, time) {
+
+    closeMsg();
+    $('body').append('<div class="alert alert-danger alert-dismissable">'+
+    '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'+
+    ' <h4><i class="icon fa fa-ban"></i>警告!</h4>'+message+
+    '</div>');
+    setTimeout(closeMsg, time || 8000);
+}
+
+function showSuccessMsg(message) {
+    closeMsg();
+
+    $('body').append('<div class="alert alert-danger alert-dismissable">'+
+        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'+
+        ' <h4><i class="icon fa fa-ban"></i>成功!</h4>'+message+
+        '</div>');
+
+    setTimeout(closeMsg, 3000);
+}
+
+
+function closeMsg() {
+    var errorMsg = $('.alert-dismissable');
+    if (errorMsg.length) {
+        errorMsg.alert('close');
+    }
+}
+

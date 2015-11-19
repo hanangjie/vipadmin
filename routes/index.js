@@ -9,6 +9,7 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
 });
 
+
 router.get('/index', function(req, res, next) {
    try{
        var con=conn.conn();
@@ -23,16 +24,13 @@ router.get('/index', function(req, res, next) {
                    e.money=0;
                    selectStr+=`or userid=\"${e.id}\" `;
                });
-               selectStr=`select * from money where `+selectStr.slice(3);
+               selectStr=`select * from balance where `+selectStr.slice(3);
                sqlServer.sqlPromise({con:con,debug:debug,sql:selectStr,name:"selectMoney"}).then(function(result){
                    result.forEach(function(e){
                         for(var q=0;q<res1.length;q++){
                             if(res1[q].id==e.userid){
-                                if(e.status==1){
-                                    res1[q].money+=parseFloat(e.money);
-                                }else{
-                                    res1[q].money-=parseFloat(e.money);
-                                }
+                                res1[q].money=e.money;
+                               
                             }
                         }
                    });
@@ -77,10 +75,24 @@ router.post('/addCustomer',function(req, res, next){
     }).then(function(result){
         return sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into money(storeid,userid,money,status)
                     values(1,"${result.insertId}","${req.body.money}",1)`,name:"insertMoney"});
+    }).then(function(result){
+        if(result) {
+
+            console.log(1);
+            return sqlServer.sqlPromise({
+                con: con, debug: debug, sql: `insert into balance(userid,money)
+                    values("${result.insertId}","${req.body.money}")`,name:"insertBalance"
+            });
+        }else{
+            res.send({
+                code: "-2",
+                msg:"充值错误"
+            });
+        }
     }).then(function(result1){
         if(result1) {
             res.send({
-                userid:result.insertId,
+                userid:result1.insertId,
                 code: "1",
                 msg: "用户添加成功"
             });
@@ -118,33 +130,34 @@ router.get('/costHistory', function(req, res, next) {
     }
 });
 
-/*
-router.get('/customer/:id',function(req,res){
-    "use strict";
-    try{
-        var id=req.params.id;
-        var con=conn.conn();
-        con.connect();
-        var sql="select * from customer where storeid='1' limit 10";
-        con.query(sql,function(err1,res1){
-            debug("error:%o;result:%o",res1,err1);
-            push(res1);
+
+router.get('/costList/:id', function(req, res, next) {
+    var con=conn.conn();
+    con.connect();
+    var id=req.params.id;
+    var sql=`select * from money  where money.userid = "${id}"`;
+    var resultObj={};
+    sqlServer.sqlPromise({con:con,debug:debug,sql:sql,name:"select"}).then(function(result){
+        result.forEach(function(e,i){
+            e.time=moment(e.time).format("YYYY-MM-DD HH:mm:ss");
+            e.status=e.status==1?"充值":"消费";
+            e.index=i;
         });
-        function push(res1){
-            res1.forEach(function(e){
-                e.creattime=moment(e.creattime).format("YYYY-MM-DD");
-            });
-            res.render('index', { name: 'index',
-                list:res1
-            });
+        resultObj={name: 'index',list:result};
+        return sqlServer.sqlPromise({con:con,debug:debug,sql:`select * from customer where id = "${id}"`,name:"selectUser"});
+    }).then(function(result){
+        "use strict";
+        if(result.length>0){
+            resultObj.user={
+                name:result[0].name,
+                mobile:result[0].mobile,
+                id:result[0].id
+            };
+            debug("result:",resultObj);
+            res.render('costList', resultObj);
         }
-        con.end();
-
-    }catch(e){
-        console.log(e.stack);
-    }
-});*/
-
+    });
+});
 router.post('/regist', function(req, res, next) {
     try{
         var con=conn.conn();

@@ -1,103 +1,38 @@
 0 info it worked if it ends with ok
-1 verbose cli [ 'node',
-1 verbose cli   'C:\\Users\\Administrator\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\npm\\bin\\npm-cli.js',
-1 verbose cli   '--userconfig=C:\\Users\\Administrator\\.cnpmrc',
-1 verbose cli   '--disturl=https://npm.taobao.org/mirrors/node',
-1 verbose cli   '--cache=C:\\Users\\Administrator\\.cnpm',
-1 verbose cli   '--registry=https://registry.npm.taobao.org',
-1 verbose cli   '--node-gyp=C:\\Users\\Administrator\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\pangyp\\bin\\node-gyp.js',
-1 verbose cli   'install',
-1 verbose cli   'simple-co' ]
-2 info using npm@2.7.6
+1 verbose cli [ 'd:\\soft\\nodejs\\node.exe',
+1 verbose cli   'd:\\soft\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'start',
+1 verbose cli   'win7' ]
+2 info using npm@2.5.1
 3 info using node@v0.12.0
-4 verbose install initial load of F:\work\gitWeb\vipadmin\package.json
-5 verbose installManyTop reading scoped package data from F:\work\gitWeb\vipadmin\node_modules\body-parser\package.json
-6 verbose installManyTop reading scoped package data from F:\work\gitWeb\vipadmin\node_modules\co\package.json
-7 verbose installManyTop reading scoped package data from F:\work\gitWeb\vipadmin\node_modules\cookie-parser\package.json
-8 verbose installManyTop reading scoped package data from F:\work\gitWeb\vipadmin\node_modules\cookie-session\package.json
-9 verbose installManyTop reading scoped package data from F:\work\gitWeb\vipadmin\node_modules\debug\package.json
-10 verbose installManyTop reading scoped package data from F:\work\gitWeb\vipadmin\node_modules\ejs\package.json
-11 verbose installManyTop reading scoped package data from F:\work\gitWeb\vipadmin\node_modules\express\package.json
-12 verbose installManyTop reading scoped package data from F:\work\gitWeb\vipadmin\node_modules\jade\package.json
-13 verbose installManyTop reading scoped package data from F:\work\gitWeb\vipadmin\node_modules\moment\package.json
-14 verbose installManyTop reading scoped package data from F:\work\gitWeb\vipadmin\node_modules\morgan\package.json
-15 verbose installManyTop reading scoped package data from F:\work\gitWeb\vipadmin\node_modules\mysql\package.json
-16 verbose installManyTop reading scoped package data from F:\work\gitWeb\vipadmin\node_modules\serve-favicon\package.json
-17 verbose installManyTop reading scoped package data from F:\work\gitWeb\vipadmin\node_modules\session\package.json
-18 warn package.json session@0.1.0 bugs['web'] should probably be bugs['url'].
-19 verbose readDependencies loading dependencies from F:\work\gitWeb\vipadmin\package.json
-20 silly cache add args [ 'simple-co', null ]
-21 verbose cache add spec simple-co
-22 silly cache add parsed spec { raw: 'simple-co',
-22 silly cache add   scope: null,
-22 silly cache add   name: 'simple-co',
-22 silly cache add   rawSpec: '',
-22 silly cache add   spec: '*',
-22 silly cache add   type: 'range' }
-23 silly addNamed simple-co@*
-24 verbose addNamed "*" is a valid semver range for simple-co
-25 silly addNameRange { name: 'simple-co', range: '*', hasData: false }
-26 silly mapToRegistry name simple-co
-27 silly mapToRegistry using default registry
-28 silly mapToRegistry registry https://registry.npm.taobao.org/
-29 silly mapToRegistry uri https://registry.npm.taobao.org/simple-co
-30 verbose addNameRange registry:https://registry.npm.taobao.org/simple-co not in flight; fetching
-31 verbose request uri https://registry.npm.taobao.org/simple-co
-32 verbose request no auth needed
-33 info attempt registry request try #1 at 10:59:32
-34 verbose request id 8c0234043f7568dc
-35 http request GET https://registry.npm.taobao.org/simple-co
-36 http 404 https://registry.npm.taobao.org/simple-co
-37 verbose headers { 'content-type': 'application/json',
-37 verbose headers   'cache-control': 'max-age=0',
-37 verbose headers   'content-length': '2',
-37 verbose headers   'accept-ranges': 'bytes',
-37 verbose headers   date: 'Wed, 14 Oct 2015 02:59:35 GMT',
-37 verbose headers   via: '1.1 varnish',
-37 verbose headers   age: '0',
-37 verbose headers   connection: 'close',
-37 verbose headers   'x-served-by': 'cache-nrt6125-NRT',
-37 verbose headers   'x-cache': 'MISS',
-37 verbose headers   'x-cache-hits': '0',
-37 verbose headers   'x-timer': 'S1444791575.053114,VS0,VE124' }
-38 silly get cb [ 404,
-38 silly get   { 'content-type': 'application/json',
-38 silly get     'cache-control': 'max-age=0',
-38 silly get     'content-length': '2',
-38 silly get     'accept-ranges': 'bytes',
-38 silly get     date: 'Wed, 14 Oct 2015 02:59:35 GMT',
-38 silly get     via: '1.1 varnish',
-38 silly get     age: '0',
-38 silly get     connection: 'close',
-38 silly get     'x-served-by': 'cache-nrt6125-NRT',
-38 silly get     'x-cache': 'MISS',
-38 silly get     'x-cache-hits': '0',
-38 silly get     'x-timer': 'S1444791575.053114,VS0,VE124' } ]
-39 verbose stack Error: Registry returned 404 for GET on https://registry.npm.taobao.org/simple-co
-39 verbose stack     at CachingRegistryClient.<anonymous> (C:\Users\Administrator\AppData\Roaming\npm\node_modules\cnpm\node_modules\npm\node_modules\npm-registry-client\lib\request.js:239:14)
-39 verbose stack     at Request._callback (C:\Users\Administrator\AppData\Roaming\npm\node_modules\cnpm\node_modules\npm\node_modules\npm-registry-client\lib\request.js:170:14)
-39 verbose stack     at Request.self.callback (C:\Users\Administrator\AppData\Roaming\npm\node_modules\cnpm\node_modules\npm\node_modules\request\request.js:360:22)
-39 verbose stack     at Request.emit (events.js:110:17)
-39 verbose stack     at Request.<anonymous> (C:\Users\Administrator\AppData\Roaming\npm\node_modules\cnpm\node_modules\npm\node_modules\request\request.js:1202:14)
-39 verbose stack     at Request.emit (events.js:129:20)
-39 verbose stack     at IncomingMessage.<anonymous> (C:\Users\Administrator\AppData\Roaming\npm\node_modules\cnpm\node_modules\npm\node_modules\request\request.js:1150:12)
-39 verbose stack     at IncomingMessage.emit (events.js:129:20)
-39 verbose stack     at _stream_readable.js:908:16
-39 verbose stack     at process._tickCallback (node.js:355:11)
-40 verbose statusCode 404
-41 verbose pkgid simple-co
-42 verbose cwd F:\work\gitWeb\vipadmin
-43 error Windows_NT 6.3.9600
-44 error argv "node" "C:\\Users\\Administrator\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\npm\\bin\\npm-cli.js" "--userconfig=C:\\Users\\Administrator\\.cnpmrc" "--disturl=https://npm.taobao.org/mirrors/node" "--cache=C:\\Users\\Administrator\\.cnpm" "--registry=https://registry.npm.taobao.org" "--node-gyp=C:\\Users\\Administrator\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\pangyp\\bin\\node-gyp.js" "install" "simple-co"
-45 error node v0.12.0
-46 error npm  v2.7.6
-47 error code E404
-48 error 404 Registry returned 404 for GET on https://registry.npm.taobao.org/simple-co
-48 error 404
-48 error 404 'simple-co' is not in the npm registry.
-48 error 404 You should bug the author to publish it (or use the name yourself!)
-48 error 404 It was specified as a dependency of 'vipadmin'
-48 error 404
-48 error 404 Note that you can also install from a
-48 error 404 tarball, folder, http url, or git url.
-49 verbose exit [ 1, true ]
+4 verbose run-script [ 'prestart', 'start', 'poststart' ]
+5 info prestart vipadmin@0.0.1
+6 info start vipadmin@0.0.1
+7 verbose unsafe-perm in lifecycle true
+8 info vipadmin@0.0.1 Failed to exec start script
+9 verbose stack Error: vipadmin@0.0.1 start: `node ./bin/www win7`
+9 verbose stack Exit status 1
+9 verbose stack     at EventEmitter.<anonymous> (d:\soft\nodejs\node_modules\npm\lib\utils\lifecycle.js:213:16)
+9 verbose stack     at EventEmitter.emit (events.js:110:17)
+9 verbose stack     at ChildProcess.<anonymous> (d:\soft\nodejs\node_modules\npm\lib\utils\spawn.js:14:12)
+9 verbose stack     at ChildProcess.emit (events.js:110:17)
+9 verbose stack     at maybeClose (child_process.js:1008:16)
+9 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:1080:5)
+10 verbose pkgid vipadmin@0.0.1
+11 verbose cwd f:\work\gitWeb\vipadmin
+12 error Windows_NT 6.3.9600
+13 error argv "d:\\soft\\nodejs\\node.exe" "d:\\soft\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "start" "win7"
+14 error node v0.12.0
+15 error npm  v2.5.1
+16 error code ELIFECYCLE
+17 error vipadmin@0.0.1 start: `node ./bin/www win7`
+17 error Exit status 1
+18 error Failed at the vipadmin@0.0.1 start script 'node ./bin/www win7'.
+18 error This is most likely a problem with the vipadmin package,
+18 error not with npm itself.
+18 error Tell the author that this fails on your system:
+18 error     node ./bin/www win7
+18 error You can get their info via:
+18 error     npm owner ls vipadmin
+18 error There is likely additional logging output above.
+19 verbose exit [ 1, true ]
