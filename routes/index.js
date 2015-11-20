@@ -61,6 +61,7 @@ router.post('/addCustomer',function(req, res, next){
 
     var con=conn.conn();
     con.connect();
+    var userId=0;
 
     sqlServer.sqlPromise({con:con,debug:debug,sql:`select * from customer where mobile='${req.body.mobile}'`,name:"select"}).then(function(res1){
         if(res1.length<1){
@@ -73,6 +74,7 @@ router.post('/addCustomer',function(req, res, next){
             con.end();
         }
     }).then(function(result){
+        userId=result.insertId;
         return sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into money(storeid,userid,money,status)
                     values(1,"${result.insertId}","${req.body.money}",1)`,name:"insertMoney"});
     }).then(function(result){
@@ -81,7 +83,7 @@ router.post('/addCustomer',function(req, res, next){
             console.log(1);
             return sqlServer.sqlPromise({
                 con: con, debug: debug, sql: `insert into balance(userid,money)
-                    values("${result.insertId}","${req.body.money}")`,name:"insertBalance"
+                    values("${userId}","${req.body.money}")`,name:"insertBalance"
             });
         }else{
             res.send({
@@ -92,7 +94,7 @@ router.post('/addCustomer',function(req, res, next){
     }).then(function(result1){
         if(result1) {
             res.send({
-                userid:result1.insertId,
+                userid:userId,
                 code: "1",
                 msg: "用户添加成功"
             });
@@ -104,6 +106,49 @@ router.post('/addCustomer',function(req, res, next){
         }
         con.end();
     });
+});
+
+//消费
+router.get('/cost/:id', function(req, res, next) {
+    try{
+        var con=conn.conn();
+        con.connect();
+        req.body.money=parseFloat(req.body.money)||0.00;
+        var id=req.params.id;
+        sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into money(storeid,userid,money,status)
+                    values(1,"${id}","${req.body.money}",2)`,name:"insertMoney"}).then(function(result){
+            res.send({
+                code: "1",
+                msg:"消费成功"
+            });
+
+        });
+        con.end();
+    }catch(e){
+        console.log(e.stack);
+    }
+});
+
+//充值
+router.get('/recharge/:id', function(req, res, next) {
+    try{
+        var con=conn.conn();
+        con.connect();
+        req.body.money=parseFloat(req.body.money)||0.00;
+        var id=req.params.id;
+        sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into money(storeid,userid,money,status)
+                    values(1,"${id}","${req.body.money}",1)`,name:"insertMoney"}).then(function(result){
+           return sqlServer.sqlPromise({con:con,debug:debug,sql:`select * from balance where userid='${id}'`,name:"selectBalance"})
+        }).then(function(result) {
+            res.send({
+                code: "1",
+                msg:"充值成功"
+            });
+        });
+        con.end();
+    }catch(e){
+        console.log(e.stack);
+    }
 });
 
 
@@ -158,6 +203,7 @@ router.get('/costList/:id', function(req, res, next) {
         }
     });
 });
+
 router.post('/regist', function(req, res, next) {
     try{
         var con=conn.conn();

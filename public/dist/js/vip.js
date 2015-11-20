@@ -79,6 +79,24 @@ $(function(){
             });
         })
     });
+
+    //充值
+    $(".listRecharge").click(function(){
+        $("#rechargeMoney").attr("data-id",$(this).attr("relid"));
+    });
+    $("#rechargeMoney").click(function(){
+        var id=$(this).attr("data-id");
+        $.ajax({
+            type:"get",
+            url:"/recharge/"+id,
+            data:{
+                money:$("#rechargeCount").val()
+            }
+        }).done(function(data){
+            showSuccessMsg(data.msg);
+        });
+    });
+    //消费
 });
 
 

@@ -56,7 +56,7 @@
                                                 <div class="btn-group">
                                                     <a href="/costList/<%=lists.id %>" class="btn btn-info">详情</a>
                                                     <button type="button" class="btn btn-info" relId="<%=lists.id %>"  data-toggle="modal" data-target="#consumeModal">消费</button>
-                                                    <button type="button" class="btn btn-danger" relId="<%=lists.id %>"  data-toggle="modal" data-target="#rechargeModal">充值</button>
+                                                    <button type="button" class="btn btn-danger listRecharge" relId="<%=lists.id %>"  data-toggle="modal" data-target="#rechargeModal">充值</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -64,16 +64,7 @@
                                     <% } %>
 
                                 </tbody>
-                               <!-- <tfoot>
-                                <tr>
-                                    <th>手机</th>
-                                    <th>余额</th>
-                                    <th>最后充值</th>
-                                    <th>最后一次消费时间</th>
-                                    <th>备注</th>
-                                    <th width="200">操作</th>
-                                </tr>
-                                </tfoot>-->
+
                             </table>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
@@ -216,13 +207,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputPassword3" class="col-sm-2 control-label">recharge</label>
+                                <label class="col-sm-2 control-label">recharge</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" >
+                                    <input type="text" class="form-control" id="rechargeCount" >
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputPassword3" class="col-sm-2 control-label">code</label>
+                                <label class="col-sm-2 control-label">code</label>
                                 <div class="col-sm-10">
                                     <div class="input-group input-group-sm">
                                         <input type="text" class="form-control" />
@@ -236,7 +227,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary">提交</button>
+                        <button type="button" class="btn btn-primary " id="rechargeMoney">提交</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->
