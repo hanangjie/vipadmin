@@ -134,18 +134,21 @@ router.get('/recharge/:id', function(req, res, next) {
     try{
         var con=conn.conn();
         con.connect();
-        req.body.money=parseFloat(req.body.money)||0.00;
+        //req.body.money=parseFloat(req.body.money)||0.00;
+        console.log(req.body.money);
         var id=req.params.id;
         sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into money(storeid,userid,money,status)
-                    values(1,"${id}","${req.body.money}",1)`,name:"insertMoney"}).then(function(result){
+                    values(1,"${id}","${req.body.money}",1)`,name:"insertMoney"}).then(function(res1){
            return sqlServer.sqlPromise({con:con,debug:debug,sql:`select * from balance where userid='${id}'`,name:"selectBalance"})
         }).then(function(result) {
+            return sqlServer.sqlPromise({con:con,debug:debug,sql:`update balance set money=${result[0].money}-${req.body.money} where userid='${id}'`,name:"updateBalance"})
+        }).then(function(result) {
+            con.end();
             res.send({
                 code: "1",
                 msg:"充值成功"
             });
         });
-        con.end();
     }catch(e){
         console.log(e.stack);
     }
