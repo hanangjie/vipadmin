@@ -65,7 +65,7 @@ router.post('/addCustomer',function(req, res, next){
 
     sqlServer.sqlPromise({con:con,debug:debug,sql:`select * from customer where mobile='${req.body.mobile}'`,name:"select"}).then(function(res1){
         if(res1.length<1){
-           return sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into customer(storeid,mobile,name) values(1,"${req.body.mobile}","${req.body.name}")`,name:"insert"})
+           return sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into customer(storeid,mobile,name,remark) values(1,"${req.body.mobile}","${req.body.name}","${req.body.remark}")`,name:"insert"})
         }else{
             res.send({
                 code:"-1",
@@ -134,14 +134,15 @@ router.get('/recharge/:id', function(req, res, next) {
     try{
         var con=conn.conn();
         con.connect();
-        //req.body.money=parseFloat(req.body.money)||0.00;
-        console.log(req.body.money);
+        req.query.money=parseFloat(req.query.money)||0.00;
         var id=req.params.id;
         sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into money(storeid,userid,money,status)
-                    values(1,"${id}","${req.body.money}",1)`,name:"insertMoney"}).then(function(res1){
+                    values(1,"${id}","${req.query.money}",1)`,name:"insertMoney"}).then(function(res1){
            return sqlServer.sqlPromise({con:con,debug:debug,sql:`select * from balance where userid='${id}'`,name:"selectBalance"})
         }).then(function(result) {
-            return sqlServer.sqlPromise({con:con,debug:debug,sql:`update balance set money=${result[0].money}-${req.body.money} where userid='${id}'`,name:"updateBalance"})
+            debug(result[0].money);
+            var resultMoney=result[0].money+req.query.money
+            return sqlServer.sqlPromise({con:con,debug:debug,sql:`update balance set money=${resultMoney} where userid='${id}'`,name:"updateBalance"})
         }).then(function(result) {
             con.end();
             res.send({
