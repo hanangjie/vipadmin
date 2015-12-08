@@ -156,6 +156,41 @@ router.get('/recharge/:id', function(req, res, next) {
 });
 
 
+
+//消费
+router.get('/consume/:id', function(req, res, next) {
+    try{
+        var con=conn.conn();
+        con.connect();
+        req.query.money=parseFloat(req.query.money)||0.00;
+        var id=req.params.id;
+        sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into money(storeid,userid,money,status)
+                    values(1,"${id}","${req.query.money}",2)`,name:"insertMoney"}).then(function(res1){
+           return sqlServer.sqlPromise({con:con,debug:debug,sql:`select * from balance where userid='${id}'`,name:"selectBalance"})
+        }).then(function(result) {
+            debug(result[0].money);
+            var resultMoney=result[0].money-req.query.money
+            if(resultMoney<0){
+                con.end();
+                res.send({
+                    code: "1",
+                    msg:"余额不足"
+                });
+                return;
+            }
+            return sqlServer.sqlPromise({con:con,debug:debug,sql:`update balance set money=${resultMoney} where userid='${id}'`,name:"updateBalance"})
+        }).then(function(result) {
+            con.end();
+            res.send({
+                code: "1",
+                msg:"消费成功"
+            });
+        });
+    }catch(e){
+        console.log(e.stack);
+    }
+});
+
 router.get('/costHistory', function(req, res, next) {
     try{
         var con=conn.conn();

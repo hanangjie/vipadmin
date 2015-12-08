@@ -55,7 +55,7 @@
                                             <td>
                                                 <div class="btn-group">
                                                     <a href="/costList/<%=lists.id %>" class="btn btn-info">详情</a>
-                                                    <button type="button" class="btn btn-info" relId="<%=lists.id %>"  data-toggle="modal" data-target="#consumeModal">消费</button>
+                                                    <button type="button" class="btn btn-info listConsume" relId="<%=lists.id %>"  data-toggle="modal" data-target="#consumeModal">消费</button>
                                                     <button type="button" class="btn btn-danger listRecharge" relId="<%=lists.id %>"  data-toggle="modal" data-target="#rechargeModal">充值</button>
                                                 </div>
                                             </td>
@@ -131,7 +131,7 @@
                 <form class="form-horizontal"  rel="ajax" >
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">consume</h4>
+                    <h4 class="modal-title">消费</h4>
                 </div>
                 <div class="modal-body">
                         <!-- form start -->
@@ -139,7 +139,7 @@
                                 <div class="form-group">
                                     <label  class="col-sm-2 control-label">消费</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control moneySign" value="￥" name="cosume">
+                                        <input type="text" class="form-control moneySign"  id="consumeCount" value="￥" name="cosume">
                                     </div>
                                 </div>
 

@@ -97,6 +97,21 @@ $(function(){
         });
     });
     //消费
+    $(".listConsume").click(function(){
+        $("#consumeMoney").attr("data-id",$(this).attr("relid"));
+    });
+     $("#consumeMoney").click(function(){
+        var id=$(this).attr("data-id");
+        $.ajax({
+            type:"get",
+            url:"/consume/"+id,
+            data:{
+                money:$("#consumeCount").val().replace("￥","")
+            }
+        }).done(function(data){
+            showSuccessMsg(data.msg);
+        });
+    });
 });
 
 
