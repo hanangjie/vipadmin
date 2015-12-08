@@ -104,7 +104,7 @@ $(function(){
         var id=$(this).attr("data-id");
         $.ajax({
             type:"get",
-            url:"/consume/"+id,
+            url:"/consume/"+id, 
             data:{
                 money:$("#consumeCount").val().replace("￥","")
             }
