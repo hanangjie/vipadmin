@@ -21,7 +21,7 @@
         <div class="pad margin no-print">
             <div class="callout callout-info" style="margin-bottom: 0!important;">
                 <% if (user) { %>
-                <h4> <%=user.name %> <button type="button" class="btn btn-danger pull-right deleteModal" action="href" >删除该用户</button></h4>
+                <h4> <%=user.name %> <button type="button" class="btn btn-danger pull-right deleteModal" method="post" action="/deleteUser/<%=user.id %>" >删除该用户</button></h4>
                 <%=user.mobile %>
                 <% } %>
             </div>

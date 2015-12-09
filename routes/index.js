@@ -15,7 +15,7 @@ router.get('/index', function(req, res, next) {
        var con=conn.conn();
        con.connect();
        var sql="select * from customer where storeid='1' limit 10";
-       sqlServer.sqlPromise({con:con,debug:debug,sql:"select * from customer where storeid='1' limit 10",name:"select"}).then(function(res1){
+       sqlServer.sqlPromise({con:con,debug:debug,sql:"select * from customer where storeid='1' and status=0 limit 10",name:"select"}).then(function(res1){
            "use strict";
             var selectStr="";
            if(res1.length>0){
@@ -63,9 +63,9 @@ router.post('/addCustomer',function(req, res, next){
     con.connect();
     var userId=0;
 
-    sqlServer.sqlPromise({con:con,debug:debug,sql:`select * from customer where mobile='${req.body.mobile}'`,name:"select"}).then(function(res1){
+    sqlServer.sqlPromise({con:con,debug:debug,sql:`select * from customer where mobile='${req.body.mobile}' and status=0`,name:"select"}).then(function(res1){
         if(res1.length<1){
-           return sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into customer(storeid,mobile,name,remark) values(1,"${req.body.mobile}","${req.body.name}","${req.body.remark}")`,name:"insert"})
+           return sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into customer(storeid,mobile,name,remark,status) values(1,"${req.body.mobile}","${req.body.name}","${req.body.remark}",0)`,name:"insert"})
         }else{
             res.send({
                 code:"-1",
@@ -108,26 +108,6 @@ router.post('/addCustomer',function(req, res, next){
     });
 });
 
-//消费
-router.get('/cost/:id', function(req, res, next) {
-    try{
-        var con=conn.conn();
-        con.connect();
-        req.body.money=parseFloat(req.body.money)||0.00;
-        var id=req.params.id;
-        sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into money(storeid,userid,money,status)
-                    values(1,"${id}","${req.body.money}",2)`,name:"insertMoney"}).then(function(result){
-            res.send({
-                code: "1",
-                msg:"消费成功"
-            });
-
-        });
-        con.end();
-    }catch(e){
-        console.log(e.stack);
-    }
-});
 
 //充值
 router.get('/recharge/:id', function(req, res, next) {
@@ -161,31 +141,54 @@ router.get('/recharge/:id', function(req, res, next) {
 router.get('/consume/:id', function(req, res, next) {
     try{
         var con=conn.conn();
+        var resultMoney=0;
         con.connect();
         req.query.money=parseFloat(req.query.money)||0.00;
         var id=req.params.id;
-        sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into money(storeid,userid,money,status)
-                    values(1,"${id}","${req.query.money}",2)`,name:"insertMoney"}).then(function(res1){
-           return sqlServer.sqlPromise({con:con,debug:debug,sql:`select * from balance where userid='${id}'`,name:"selectBalance"})
-        }).then(function(result) {
-            debug(result[0].money);
-            var resultMoney=result[0].money-req.query.money
-            if(resultMoney<0){
+        sqlServer.sqlPromise({con:con,debug:debug,sql:`select * from balance where userid='${id}'`,name:"selectBalance"}).then(function(result){
+            resultMoney=result[0].money-req.query.money
+            if(result[0].money<req.query.money){
                 con.end();
                 res.send({
                     code: "1",
                     msg:"余额不足"
                 });
+                debug("over");
                 return;
             }
-            return sqlServer.sqlPromise({con:con,debug:debug,sql:`update balance set money=${resultMoney} where userid='${id}'`,name:"updateBalance"})
-        }).then(function(result) {
-            con.end();
-            res.send({
-                code: "1",
-                msg:"消费成功"
+            sqlServer.sqlPromise({con:con,debug:debug,sql:`insert into money(storeid,userid,money,status)
+                    values(1,"${id}","${req.query.money}",2)`,name:"insertMoney"}).then(function(r){
+             return sqlServer.sqlPromise({con:con,debug:debug,sql:`update balance set money=${resultMoney} where userid='${id}'`,name:"updateBalance"})
+            }).then(function(result) {
+                console.log("conneOver");
+                con.end();
+                res.send({
+                    code: "1",
+                    msg:"消费成功"
+                });
             });
-        });
+        })
+       
+    }catch(e){
+        console.log(e.stack);
+    }
+});
+
+//删除用户
+router.post('/deleteUser/:id', function(req, res, next) {
+    try{
+        var con=conn.conn();
+        con.connect();
+        req.query.money=parseFloat(req.query.money)||0.00;
+        var id=req.params.id;
+        sqlServer.sqlPromise({con:con,debug:debug,sql:`update customer set status=6 where id='${id}'`,name:"deleteUser"}).then(function(result) {
+                con.end();
+                res.send({
+                    code: "1",
+                    msg:"删除成功"
+                });
+            });
+       
     }catch(e){
         console.log(e.stack);
     }
@@ -195,7 +198,7 @@ router.get('/costHistory', function(req, res, next) {
     try{
         var con=conn.conn();
         con.connect();
-        var sql="select * from money inner join customer on money.userid = customer.id";
+        var sql="select * from money inner join customer on money.userid = customer.id and customer.status=0";
         con.query(sql,function(err1,res1){
             debug("error:%o;result:%o",res1,err1);
             push(res1);
