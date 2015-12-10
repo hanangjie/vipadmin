@@ -7,7 +7,7 @@ router.use(function timeLog(req, res, next) {
 		next();	
 		return;
 	}
-	console.log(req.session.cookie);
+	/*console.log(req.session.cookie);*/
 	next();	
  	//res.redirect('/login');
  	

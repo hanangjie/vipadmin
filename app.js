@@ -9,7 +9,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var middleware = require('./routes/middleware');
 
-var session = require('./server/session/sessionUtils');
+//var session = require('./server/session/sessionUtils');
 var app = express();
 
 // view engine setup
@@ -20,7 +20,7 @@ app.engine('.html', require('ejs').__express);
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(session());
+//app.use(session());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

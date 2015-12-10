@@ -4,7 +4,7 @@ var conn=require("../server/config");
 var sqlServer=require("../server/sqlServer.js");
 var debug = require('debug')('vipadmin:index');
 var moment=require('moment');
-var session = require('../server/session/sessionUtils');
+/*var session = require('../server/session/sessionUtils');*/
 /* GET home page. */
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
