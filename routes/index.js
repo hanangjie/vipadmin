@@ -4,11 +4,15 @@ var conn=require("../server/config");
 var sqlServer=require("../server/sqlServer.js");
 var debug = require('debug')('vipadmin:index');
 var moment=require('moment');
+var session = require('../server/session/sessionUtils');
 /* GET home page. */
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
 });
 
+router.get('/login', function(req, res, next) {
+    res.render('login');
+});
 
 router.get('/index', function(req, res, next) {
    try{
@@ -294,6 +298,11 @@ router.post('/login', function(req, res, next) {
         });
         function push(res1){
             if(res1.length>=1){
+                 session.getById("q", 'user', function(err, reply){
+                        if(reply){
+                               console.log(reply);
+                        }
+                    });
                 res.send({
                     code:1,
                     msg:"登录成功！"
